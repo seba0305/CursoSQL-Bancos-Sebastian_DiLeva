@@ -3,7 +3,7 @@ CREATE DATABASE TRANSACCIONES_BANCO;
 USE TRANSACCIONES_BANCO;
 
 CREATE TABLE Transacciones (
-	Nro_Movimiento	INT AUTO_INCREMENT NOT NULL UNIQUE
+	Nro_Movimiento	INT AUTO_INCREMENT NOT NULL PRIMARY KEY UNIQUE
 ,   Fecha	DATE NOT NULL
 ,	Importe	DECIMAL(12,2) NOT NULL
 ,	Medio_Pago	INT	NOT NULL
@@ -46,9 +46,61 @@ CREATE TABLE Facturas(
 	Factura	INT NOT NULL PRIMARY KEY
 ,	Codigo	INT NOT NULL
 ,	Importe_factura	DECIMAL(12,2) NOT NULL
-,	Producto	INT NOT NULL
+,	Producto	VARCHAR(50) NOT NULL
 ,	Cantidad	INT NOT NULL
 );
+
+CREATE TABLE Enlace_Transacciones_Proveedores_Facturas (
+	Nro_Movimiento INT NOT NULL
+,	Nro_Proveedor INT NOT NULL
+,	Factura	INT NOT NULL
+,  PRIMARY KEY (Nro_Movimiento, Nro_Proveedor,Factura)
+);
+
+CREATE TABLE Enlace_Transacciones_Clientes_Facturas (
+	Nro_Movimiento INT NOT NULL
+,	Nro_Cliente INT NOT NULL
+,	Factura	INT NOT NULL
+,  PRIMARY KEY (Nro_Movimiento, Nro_Cliente,Factura)
+);
+
+CREATE TABLE Enlace_Transacciones_Empleados (
+	Nro_Movimiento INT NOT NULL
+,	Legajo INT NOT NULL
+,  PRIMARY KEY (Nro_Movimiento, Legajo)
+);
+
+ALTER TABLE Enlace_Transacciones_Proveedores_Facturas
+ADD CONSTRAINT fk_Enlace_Transacciones_Proveedores_Facturas_Transacciones
+FOREIGN KEY (Nro_Movimiento) REFERENCES Transacciones(Nro_Movimiento);
+
+ALTER TABLE Enlace_Transacciones_Proveedores_Facturas
+ADD CONSTRAINT fk_Enlace_Transacciones_Proveedores_Facturas_Proveedores
+FOREIGN KEY (Nro_Proveedor) REFERENCES Proveedores(Nro_Proveedor);
+
+ALTER TABLE Enlace_Transacciones_Proveedores_Facturas
+ADD CONSTRAINT fk_Enlace_Transacciones_Proveedores_Facturas_Facturas
+FOREIGN KEY (Factura) REFERENCES Facturas(factura);
+
+ALTER TABLE Enlace_Transacciones_Clientes_Facturas
+ADD CONSTRAINT fk_Enlace_Transacciones_Clientes_Facturas_Transacciones
+FOREIGN KEY (Nro_Movimiento) REFERENCES Transacciones(Nro_Movimiento);
+
+ALTER TABLE Enlace_Transacciones_Clientes_Facturas
+ADD CONSTRAINT fk_Enlace_Transacciones_Clientes_Facturas_Clientes
+FOREIGN KEY (Nro_Cliente) REFERENCES Clientes(Nro_Cliente);
+
+ALTER TABLE Enlace_Transacciones_Clientes_Facturas
+ADD CONSTRAINT fk_Enlace_Transacciones_Clientes_Facturas_Facturas
+FOREIGN KEY (Factura) REFERENCES Facturas(Factura);
+
+ALTER TABLE Enlace_Transacciones_Empleados
+ADD CONSTRAINT fk_Enlace_Transacciones_Empleados_Transacciones
+FOREIGN KEY (Nro_Movimiento) REFERENCES Transacciones(Nro_Movimiento);
+
+ALTER TABLE Enlace_Transacciones_Empleados
+ADD CONSTRAINT fk_Enlace_Transacciones_Empleados_Empleados
+FOREIGN KEY (Legajo) REFERENCES Empleados(Legajo);
 
 ALTER TABLE transacciones
 ADD CONSTRAINT FK_TRANSACCIONES_MEDIODEPAGO
@@ -58,24 +110,4 @@ FOREIGN KEY (Medio_Pago) REFERENCES medios_de_pago(Codigo_Pago)
 ALTER TABLE transacciones
 ADD CONSTRAINT FK_TRANSACCIONES_BANCOS
 FOREIGN KEY (Codigo_Banco) REFERENCES bancos(Cod_Banco)
-;
-
-ALTER TABLE transacciones
-ADD CONSTRAINT FK_TRANSACCIONES_CODIGO
-FOREIGN KEY (Codigo) REFERENCES proveedores(Nro_Proveedor)
-;
-
-ALTER TABLE transacciones
-ADD CONSTRAINT FK_TRANSACCIONES_CODIGO_Cliente
-FOREIGN KEY (Codigo) REFERENCES clientes(Nro_cliente)
-;
-
-ALTER TABLE facturas
-ADD CONSTRAINT FK_FACTURAS_CODIGO_PROVEEDORES
-FOREIGN KEY (Codigo) REFERENCES proveedores(nro_proveedor)
-;
-
-ALTER TABLE facturas
-ADD CONSTRAINT FK_FACTURAS_CODIGO_CLIENTES
-FOREIGN KEY (Codigo) REFERENCES clientes(nro_cliente)
 ;
