@@ -1,4 +1,4 @@
-# 1era Entrega Proyecto
+Entrega Proyecto
 
 Alumno: Sebastián Andres Di Leva
 
