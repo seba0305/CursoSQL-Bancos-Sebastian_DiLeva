@@ -1,5 +1,5 @@
 DELIMITER //
-CREATE FUNCTION Sueldo_Promedio_sector (Sector VARCHAR(50))
+CREATE FUNCTION sueldo_promedio_sector (sector VARCHAR(50))
 RETURNS DECIMAL (12,2)
 READS SQL DATA
 BEGIN
@@ -13,15 +13,15 @@ END; //
 DELIMITER ;	
 
 DELIMITER //
-CREATE FUNCTION Ventas_por_fecha (fecha DATE)
+CREATE FUNCTION ventas_por_fecha (fecha DATE)
 RETURNS DECIMAL (12,2)
 DETERMINISTIC
 READS SQL DATA
 BEGIN
-	DECLARE Ventas DECIMAL (12,2);
-    SELECT SUM(transacciones.importe) INTO Ventas
+	DECLARE ventas DECIMAL (12,2);
+    SELECT SUM(transacciones.importe) INTO ventas
     FROM transacciones
-    Where transacciones.fecha = Fecha;
-    RETURN Ventas;
+    Where transacciones.fecha = fecha;
+    RETURN ventas;
 END; //
 DELIMITER ;
