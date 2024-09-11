@@ -1,49 +1,49 @@
 DELIMITER //
-CREATE PROCEDURE VisualizarTransaccionYFactura(
-    IN p_Nro_Movimiento INT
+CREATE PROCEDURE visualizar_transaccion_factura(
+    IN p_nro_movimiento INT
 )
 BEGIN
-    SELECT transacciones.Nro_Movimiento,transacciones.Fecha,transacciones.Importe,medios_de_pago.Medio_Pago,bancos.Nombre_Banco,transacciones.Codigo
-    FROM Transacciones
-    JOIN Medios_de_Pago ON transacciones.Medio_Pago = medios_de_pago.Codigo_Pago
-    JOIN Bancos ON transacciones.Codigo_Banco = bancos.Cod_Banco
-    WHERE transacciones.Nro_Movimiento = p_Nro_Movimiento;
+    SELECT transacciones.nro_movimiento,transacciones.fecha,transacciones.importe,medios_de_pago.medio_pago,bancos.nombre_banco,transacciones.codigo
+    FROM transacciones
+    JOIN medios_de_pago ON transacciones.medio_pago = medios_de_pago.codigo_pago
+    JOIN bancos ON transacciones.codigo_banco = bancos.cod_banco
+    WHERE transacciones.nro_movimiento = p_nro_movimiento;
 
     SELECT 
-        facturas.Factura, 
-        facturas.Codigo, 
-        facturas.Importe_factura, 
-        facturas.Producto, 
-        facturas.Cantidad
-    FROM Facturas
-    WHERE facturas.Factura IN (
-        SELECT Factura 
-        FROM Enlace_Transacciones_Clientes_Facturas 
-        WHERE Nro_Movimiento = p_Nro_Movimiento
+        facturas.factura, 
+        facturas.codigo, 
+        facturas.importe_factura, 
+        facturas.producto, 
+        facturas.cantidad
+    FROM facturas
+    WHERE facturas.factura IN (
+        SELECT factura 
+        FROM enlace_transacciones_clientes_facturas 
+        WHERE nro_movimiento = p_nro_movimiento
         UNION
-        SELECT Factura 
-        FROM Enlace_Transacciones_Proveedores_Facturas 
-        WHERE Nro_Movimiento = p_Nro_Movimiento
+        SELECT factura 
+        FROM enlace_transacciones_proveedores_facturas 
+        WHERE nro_movimiento = p_nro_movimiento
     );
 END //
 DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE VerificarAntiguedadEmpleado(
-    IN 	p_Legajo INT,
+CREATE PROCEDURE verificar_antiguedad_empleado(
+    IN 	p_legajo INT,
     IN 	p_antiguedad_deseada INT,
-    OUT p_Mensaje VARCHAR(50)
+    OUT p_mensaje VARCHAR(50)
 )
 BEGIN
-    DECLARE antiguedadEmpleado INT;
-    SELECT Antiguedad INTO antiguedadEmpleado
-    FROM Empleados
-    WHERE Legajo = p_Legajo;
-    IF antiguedadEmpleado < p_antiguedad_deseada THEN
-        SET p_Mensaje = 'Menor antiguedad';
+    DECLARE antiguedad_empleado INT;
+    SELECT antiguedad INTO antiguedad_empleado
+    FROM empleados
+    WHERE legajo = p_legajo;
+    IF antiguedad_empleado < p_antiguedad_deseada THEN
+        SET p_mensaje = 'Menor antiguedad';
     ELSE
-        SET p_Mensaje = 'Mayor antiguedad';
+        SET p_mensaje = 'Mayor antiguedad';
     END IF;
 END //
 DELIMITER ;
