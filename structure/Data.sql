@@ -1,4 +1,4 @@
-INSERT INTO Proveedores (Nro_Proveedor, Raz_soc_Prov, Correo)
+INSERT INTO proveedores (nro_proveedor, raz_soc_prov, correo)
 VALUES (1, 'Cremin LLC', 'ctocher0@chicagotribune.com'),
 (2, 'Jaskolski LLC', 'amenezes1@uol.com.br'),
 (3, 'Labadie LLC', 'ncosely2@instagram.com'),
@@ -20,7 +20,7 @@ VALUES (1, 'Cremin LLC', 'ctocher0@chicagotribune.com'),
 (19, 'Gleason, Tromp and Crooks', 'jsarrelli@flickr.com'),
 (20, 'Rodriguez Inc', 'khanveyj@spotify.com');
 
-INSERT INTO clientes (Nro_Cliente,Raz_soc_Cliente,Correo)
+INSERT INTO clientes (nro_cliente,raz_soc_cliente,correo)
 VALUES (101,'Tremblay-Schultz','idurdy0@oakley.com'),
 (102,'Mann-Collins','ltorn1@yahoo.com'),
 (103,'Tillman, Goyette and Gusikowski','jlage2@godaddy.com'),
@@ -42,7 +42,7 @@ VALUES (101,'Tremblay-Schultz','idurdy0@oakley.com'),
 (119,'Beier, Ebert and Block','adelaguai@hatena.ne.jp'),
 (120,'Beatty-Gerlach','haldrenj@cnet.com');
 
-INSERT INTO empleados (Legajo,Nombre_apellido,Antiguedad,Sector,Correo)
+INSERT INTO empleados (legajo,nombre_apellido,antiguedad,sector,correo)
 VALUES (201,'Lorena Vargas',10,'marketing','jgillbee0@telegraph.co.uk'),
 (202,'Mateo Rojas',2,'administrativo','kellcock1@microsoft.com'),
 (203,'Abril Soto',11,'administrativo','egawkes2@furl.net'),
@@ -64,7 +64,7 @@ VALUES (201,'Lorena Vargas',10,'marketing','jgillbee0@telegraph.co.uk'),
 (219,'Alma Cervantes',17,'ventas','grawlcliffei@wikia.com'),
 (220,'Dante Sanchez',13,'financiero','bcolafatej@taobao.com');
 
-INSERT INTO bancos (Cod_Banco,Nombre_Banco,Oficial)
+INSERT INTO bancos (cod_banco,nombre_banco,oficial)
 VALUES (7,'Banco Galicia','Carmen Castro'),
 (11,'Banco Nacion','Victor Silva'),
 (14,'Banco Provincia','Juan Perez'),
@@ -85,13 +85,13 @@ VALUES (7,'Banco Galicia','Carmen Castro'),
 (94,'Corrientes','Juan Perez'),
 (97,'Provincia de Neuquen','Jorge Torres');
 
-INSERT INTO medios_de_pago(Codigo_Pago,MEdio_Pago)
+INSERT INTO medios_de_pago(codigo_pago,medio_pago)
 VALUES (1,'Tarjeta de credito'),
 (2,'Tarjeta de debito'),
 (3,'Transferencia bancaria'),
 (4,'Efectivo');
 
-INSERT INTO facturas(Factura,Codigo,Importe_factura,Producto,Cantidad)
+INSERT INTO facturas(factura,codigo,importe_factura,producto,cantidad)
 VALUES (71906,19,790737.37,'harina de maiz',16),
 (75362,109,335357.44,'harina de avena',106),
 (21787,2055,883250.87,'harina de avena',6),
@@ -133,7 +133,7 @@ VALUES (71906,19,790737.37,'harina de maiz',16),
 (45990,13,195312.81,'harina de trigo',10),
 (83971,2,503925.93,'harina de avena',2);
 
-INSERT INTO transacciones (Nro_Movimiento,Fecha,Importe,Medio_Pago,Codigo_Banco,Codigo)
+INSERT INTO transacciones (nro_movimiento,fecha,importe,medio_pago,codigo_banco,codigo)
 VALUES (1, '2024-05-25', 347676.67, 4, 44, 215),
 (2, '2024-05-21', 105846.15, 2, 17, 219),
 (3, '2024-05-19', 860566.12, 2, 65, 204),
