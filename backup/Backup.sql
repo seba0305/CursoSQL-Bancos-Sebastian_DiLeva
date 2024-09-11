@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `transacciones_banco` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `transacciones_banco`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: transacciones_banco
@@ -23,10 +25,10 @@ DROP TABLE IF EXISTS `bancos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bancos` (
-  `Cod_Banco` int NOT NULL,
-  `Nombre_Banco` varchar(50) NOT NULL,
-  `Oficial` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Banco`)
+  `cod_banco` int NOT NULL,
+  `nombre_banco` varchar(50) NOT NULL,
+  `oficial` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`cod_banco`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,10 +50,10 @@ DROP TABLE IF EXISTS `clientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clientes` (
-  `Nro_Cliente` int NOT NULL AUTO_INCREMENT,
-  `Raz_soc_Cliente` varchar(50) NOT NULL,
-  `Correo` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Nro_Cliente`)
+  `nro_cliente` int NOT NULL AUTO_INCREMENT,
+  `raz_soc_cliente` varchar(50) NOT NULL,
+  `correo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`nro_cliente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -73,12 +75,12 @@ DROP TABLE IF EXISTS `empleados`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `empleados` (
-  `Legajo` int NOT NULL AUTO_INCREMENT,
-  `Nombre_Apellido` varchar(50) NOT NULL,
-  `Antiguedad` int DEFAULT NULL,
-  `Sector` varchar(50) DEFAULT NULL,
-  `Correo` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Legajo`)
+  `legajo` int NOT NULL AUTO_INCREMENT,
+  `nombre_apellido` varchar(50) NOT NULL,
+  `antiguedad` int DEFAULT NULL,
+  `sector` varchar(50) DEFAULT NULL,
+  `correo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`legajo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -108,7 +110,7 @@ DELIMITER ;;
         JOIN empleados ON facturas.codigo = empleados.legajo
         WHERE empleados.sector = sectores.sector
     )
-    WHERE sector = NEW.sector;
+    WHERE sector = new.sector;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -124,15 +126,15 @@ DROP TABLE IF EXISTS `enlace_transacciones_clientes_facturas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `enlace_transacciones_clientes_facturas` (
-  `Nro_Movimiento` int NOT NULL,
-  `Nro_Cliente` int NOT NULL,
-  `Factura` int NOT NULL,
-  PRIMARY KEY (`Nro_Movimiento`,`Nro_Cliente`,`Factura`),
-  KEY `fk_Enlace_Transacciones_Clientes_Facturas_Clientes` (`Nro_Cliente`),
-  KEY `fk_Enlace_Transacciones_Clientes_Facturas_Facturas` (`Factura`),
-  CONSTRAINT `fk_Enlace_Transacciones_Clientes_Facturas_Clientes` FOREIGN KEY (`Nro_Cliente`) REFERENCES `clientes` (`Nro_Cliente`),
-  CONSTRAINT `fk_Enlace_Transacciones_Clientes_Facturas_Facturas` FOREIGN KEY (`Factura`) REFERENCES `facturas` (`Factura`),
-  CONSTRAINT `fk_Enlace_Transacciones_Clientes_Facturas_Transacciones` FOREIGN KEY (`Nro_Movimiento`) REFERENCES `transacciones` (`Nro_Movimiento`)
+  `nro_movimiento` int NOT NULL,
+  `nro_cliente` int NOT NULL,
+  `factura` int NOT NULL,
+  PRIMARY KEY (`nro_movimiento`,`nro_cliente`,`factura`),
+  KEY `fk_enlace_transacciones_clientes_facturas_clientes` (`nro_cliente`),
+  KEY `fk_enlace_transacciones_clientes_facturas_facturas` (`factura`),
+  CONSTRAINT `fk_enlace_transacciones_clientes_facturas_clientes` FOREIGN KEY (`nro_cliente`) REFERENCES `clientes` (`nro_cliente`),
+  CONSTRAINT `fk_enlace_transacciones_clientes_facturas_facturas` FOREIGN KEY (`factura`) REFERENCES `facturas` (`factura`),
+  CONSTRAINT `fk_enlace_transacciones_clientes_facturas_transacciones` FOREIGN KEY (`nro_movimiento`) REFERENCES `transacciones` (`nro_movimiento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -153,12 +155,12 @@ DROP TABLE IF EXISTS `enlace_transacciones_empleados`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `enlace_transacciones_empleados` (
-  `Nro_Movimiento` int NOT NULL,
-  `Legajo` int NOT NULL,
-  PRIMARY KEY (`Nro_Movimiento`,`Legajo`),
-  KEY `fk_Enlace_Transacciones_Empleados_Empleados` (`Legajo`),
-  CONSTRAINT `fk_Enlace_Transacciones_Empleados_Empleados` FOREIGN KEY (`Legajo`) REFERENCES `empleados` (`Legajo`),
-  CONSTRAINT `fk_Enlace_Transacciones_Empleados_Transacciones` FOREIGN KEY (`Nro_Movimiento`) REFERENCES `transacciones` (`Nro_Movimiento`)
+  `nro_movimiento` int NOT NULL,
+  `legajo` int NOT NULL,
+  PRIMARY KEY (`nro_movimiento`,`legajo`),
+  KEY `fk_enlace_transacciones_empleados_empleados` (`legajo`),
+  CONSTRAINT `fk_enlace_transacciones_empleados_empleados` FOREIGN KEY (`legajo`) REFERENCES `empleados` (`legajo`),
+  CONSTRAINT `fk_enlace_transacciones_empleados_transacciones` FOREIGN KEY (`nro_movimiento`) REFERENCES `transacciones` (`nro_movimiento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -179,15 +181,15 @@ DROP TABLE IF EXISTS `enlace_transacciones_proveedores_facturas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `enlace_transacciones_proveedores_facturas` (
-  `Nro_Movimiento` int NOT NULL,
-  `Nro_Proveedor` int NOT NULL,
-  `Factura` int NOT NULL,
-  PRIMARY KEY (`Nro_Movimiento`,`Nro_Proveedor`,`Factura`),
-  KEY `fk_Enlace_Transacciones_Proveedores_Facturas_Proveedores` (`Nro_Proveedor`),
-  KEY `fk_Enlace_Transacciones_Proveedores_Facturas_Facturas` (`Factura`),
-  CONSTRAINT `fk_Enlace_Transacciones_Proveedores_Facturas_Facturas` FOREIGN KEY (`Factura`) REFERENCES `facturas` (`Factura`),
-  CONSTRAINT `fk_Enlace_Transacciones_Proveedores_Facturas_Proveedores` FOREIGN KEY (`Nro_Proveedor`) REFERENCES `proveedores` (`Nro_Proveedor`),
-  CONSTRAINT `fk_Enlace_Transacciones_Proveedores_Facturas_Transacciones` FOREIGN KEY (`Nro_Movimiento`) REFERENCES `transacciones` (`Nro_Movimiento`)
+  `nro_movimiento` int NOT NULL,
+  `nro_proveedor` int NOT NULL,
+  `factura` int NOT NULL,
+  PRIMARY KEY (`nro_movimiento`,`nro_proveedor`,`factura`),
+  KEY `fk_enlace_transacciones_proveedores_facturas_proveedores` (`nro_proveedor`),
+  KEY `fk_enlace_transacciones_proveedores_facturas_facturas` (`factura`),
+  CONSTRAINT `fk_enlace_transacciones_proveedores_facturas_facturas` FOREIGN KEY (`factura`) REFERENCES `facturas` (`factura`),
+  CONSTRAINT `fk_enlace_transacciones_proveedores_facturas_proveedores` FOREIGN KEY (`nro_proveedor`) REFERENCES `proveedores` (`nro_proveedor`),
+  CONSTRAINT `fk_enlace_transacciones_proveedores_facturas_transacciones` FOREIGN KEY (`nro_movimiento`) REFERENCES `transacciones` (`nro_movimiento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -208,12 +210,12 @@ DROP TABLE IF EXISTS `facturas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `facturas` (
-  `Factura` int NOT NULL,
-  `Codigo` int NOT NULL,
-  `Importe_factura` decimal(12,2) NOT NULL,
-  `Producto` varchar(50) NOT NULL,
-  `Cantidad` int NOT NULL,
-  PRIMARY KEY (`Factura`)
+  `factura` int NOT NULL,
+  `codigo` int NOT NULL,
+  `importe_factura` decimal(12,2) NOT NULL,
+  `producto` varchar(50) NOT NULL,
+  `cantidad` int NOT NULL,
+  PRIMARY KEY (`factura`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -238,11 +240,11 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_actualizar_total_vendido` AFTER INSERT ON `facturas` FOR EACH ROW BEGIN
     UPDATE clientes
     SET total_vendido = (
-        SELECT SUM(facturas.Importe_factura)
+        SELECT SUM(facturas.importe_factura)
         FROM facturas
-        WHERE facturas.codigo = clientes.Nro_Cliente
+        WHERE facturas.codigo = clientes.nro_cliente
     )
-    WHERE Nro_Cliente = NEW.codigo;
+    WHERE nro_cliente = new.codigo;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -258,9 +260,9 @@ DROP TABLE IF EXISTS `medios_de_pago`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `medios_de_pago` (
-  `Codigo_Pago` int NOT NULL AUTO_INCREMENT,
-  `MEdio_Pago` varchar(50) NOT NULL,
-  PRIMARY KEY (`Codigo_Pago`)
+  `codigo_pago` int NOT NULL AUTO_INCREMENT,
+  `medio_pago` varchar(50) NOT NULL,
+  PRIMARY KEY (`codigo_pago`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -282,10 +284,10 @@ DROP TABLE IF EXISTS `proveedores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proveedores` (
-  `Nro_Proveedor` int NOT NULL AUTO_INCREMENT,
-  `Raz_soc_Prov` varchar(50) NOT NULL,
-  `Correo` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`Nro_Proveedor`)
+  `nro_proveedor` int NOT NULL AUTO_INCREMENT,
+  `raz_soc_prov` varchar(50) NOT NULL,
+  `correo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`nro_proveedor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -307,18 +309,18 @@ DROP TABLE IF EXISTS `transacciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transacciones` (
-  `Nro_Movimiento` int NOT NULL AUTO_INCREMENT,
-  `Fecha` date NOT NULL,
-  `Importe` decimal(12,2) NOT NULL,
-  `Medio_Pago` int NOT NULL,
-  `Codigo_Banco` int NOT NULL,
-  `Codigo` int NOT NULL,
-  PRIMARY KEY (`Nro_Movimiento`),
-  UNIQUE KEY `Nro_Movimiento` (`Nro_Movimiento`),
-  KEY `FK_TRANSACCIONES_MEDIODEPAGO` (`Medio_Pago`),
-  KEY `FK_TRANSACCIONES_BANCOS` (`Codigo_Banco`),
-  CONSTRAINT `FK_TRANSACCIONES_BANCOS` FOREIGN KEY (`Codigo_Banco`) REFERENCES `bancos` (`Cod_Banco`),
-  CONSTRAINT `FK_TRANSACCIONES_MEDIODEPAGO` FOREIGN KEY (`Medio_Pago`) REFERENCES `medios_de_pago` (`Codigo_Pago`)
+  `nro_movimiento` int NOT NULL AUTO_INCREMENT,
+  `fecha` date NOT NULL,
+  `importe` decimal(12,2) NOT NULL,
+  `medio_pago` int NOT NULL,
+  `codigo_banco` int NOT NULL,
+  `codigo` int NOT NULL,
+  PRIMARY KEY (`nro_movimiento`),
+  UNIQUE KEY `nro_movimiento` (`nro_movimiento`),
+  KEY `fk_transacciones_mediodepago` (`medio_pago`),
+  KEY `fk_transacciones_bancos` (`codigo_banco`),
+  CONSTRAINT `fk_transacciones_bancos` FOREIGN KEY (`codigo_banco`) REFERENCES `bancos` (`cod_banco`),
+  CONSTRAINT `fk_transacciones_mediodepago` FOREIGN KEY (`medio_pago`) REFERENCES `medios_de_pago` (`codigo_pago`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -341,24 +343,24 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trigger_actualizar_tablas_enlace` AFTER INSERT ON `transacciones` FOR EACH ROW BEGIN
-    INSERT INTO Enlace_Transacciones_Clientes (Nro_Movimiento, Nro_Cliente, Factura)
-    VALUES (NEW.Nro_Movimiento, NEW.Codigo, (
-        SELECT Factura
+    INSERT INTO enlace_transacciones_clientes (nro_movimiento, nro_cliente, factura)
+    VALUES (new.nro_movimiento, new.codigo, (
+        SELECT factura
         FROM facturas
-        WHERE codigo = NEW.Codigo
+        WHERE codigo = new.codigo
     ));
 
-    INSERT INTO Enlace_Transacciones_Empleados (Nro_Movimiento, Legajo_Empleado)
-    VALUES (NEW.Nro_Movimiento, (
-        SELECT Legajo
+    INSERT INTO enlace_transacciones_empleados (nro_movimiento, legajo_empleado)
+    VALUES (new.nro_movimiento, (
+        SELECT legajo
         FROM empleados
-        WHERE codigo = NEW.Codigo
+        WHERE codigo = new.codigo
     ));
-    INSERT INTO Enlace_Transacciones_Productos (Nro_Movimiento, Codigo_Producto)
-    VALUES (NEW.Nro_Movimiento, (
-        SELECT Codigo_Producto
+    INSERT INTO enlace_transacciones_productos (nro_movimiento, codigo_producto)
+    VALUES (new.nro_movimiento, (
+        SELECT codigo_producto
         FROM productos
-        WHERE codigo = NEW.Codigo
+        WHERE codigo = new.codigo
     ));
 END */;;
 DELIMITER ;
@@ -376,8 +378,8 @@ DROP TABLE IF EXISTS `view_bancos_mas_usados`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `view_bancos_mas_usados` AS SELECT 
- 1 AS `Nombre_Banco`,
- 1 AS `Bancos_mas_usados`*/;
+ 1 AS `nombre_banco`,
+ 1 AS `bancos_mas_usados`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -389,7 +391,7 @@ DROP TABLE IF EXISTS `view_mejores_clientes`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `view_mejores_clientes` AS SELECT 
- 1 AS `Raz_soc_Cliente`,
+ 1 AS `raz_soc_cliente`,
  1 AS `total_vendido`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -402,8 +404,8 @@ DROP TABLE IF EXISTS `view_proveedores_mayores_compras`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `view_proveedores_mayores_compras` AS SELECT 
- 1 AS `Raz_soc_Prov`,
- 1 AS `Producto`,
+ 1 AS `raz_soc_prov`,
+ 1 AS `producto`,
  1 AS `total_comprado`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -416,18 +418,14 @@ DROP TABLE IF EXISTS `view_top_medios_pago`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `view_top_medios_pago` AS SELECT 
- 1 AS `Medio_pago`,
+ 1 AS `medio_pago`,
  1 AS `top_medios_pago`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping events for database 'transacciones_banco'
---
-
---
 -- Dumping routines for database 'transacciones_banco'
 --
-/*!50003 DROP FUNCTION IF EXISTS `Sueldo_Promedio_sector` */;
+/*!50003 DROP FUNCTION IF EXISTS `sueldo_promedio_sector` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -437,7 +435,7 @@ SET character_set_client = @saved_cs_client;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `Sueldo_Promedio_sector`(Sector VARCHAR(50)) RETURNS decimal(12,2)
+CREATE DEFINER=`root`@`localhost` FUNCTION `sueldo_promedio_sector`(sector VARCHAR(50)) RETURNS decimal(12,2)
     READS SQL DATA
 BEGIN
 	DECLARE sueldo_promedio DECIMAL (12,2);	
@@ -452,7 +450,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP FUNCTION IF EXISTS `Ventas_por_fecha` */;
+/*!50003 DROP FUNCTION IF EXISTS `ventas_por_fecha` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -462,22 +460,22 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `Ventas_por_fecha`(fecha DATE) RETURNS decimal(12,2)
+CREATE DEFINER=`root`@`localhost` FUNCTION `ventas_por_fecha`(fecha DATE) RETURNS decimal(12,2)
     READS SQL DATA
     DETERMINISTIC
 BEGIN
-	DECLARE Ventas DECIMAL (12,2);
-    SELECT SUM(transacciones.importe) INTO Ventas
+	DECLARE ventas DECIMAL (12,2);
+    SELECT SUM(transacciones.importe) INTO ventas
     FROM transacciones
-    Where transacciones.fecha = Fecha;
-    RETURN Ventas;
+    Where transacciones.fecha = fecha;
+    RETURN ventas;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `VerificarAntiguedadEmpleado` */;
+/*!50003 DROP PROCEDURE IF EXISTS `verificar_antiguedad_empleado` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -487,20 +485,20 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `VerificarAntiguedadEmpleado`(
-    IN 	p_Legajo INT,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `verificar_antiguedad_empleado`(
+    IN 	p_legajo INT,
     IN 	p_antiguedad_deseada INT,
-    OUT p_Mensaje VARCHAR(50)
+    OUT p_mensaje VARCHAR(50)
 )
 BEGIN
-    DECLARE antiguedadEmpleado INT;
-    SELECT Antiguedad INTO antiguedadEmpleado
-    FROM Empleados
-    WHERE Legajo = p_Legajo;
-    IF antiguedadEmpleado < p_antiguedad_deseada THEN
-        SET p_Mensaje = 'Menor antiguedad';
+    DECLARE antiguedad_empleado INT;
+    SELECT antiguedad INTO antiguedad_empleado
+    FROM empleados
+    WHERE legajo = p_legajo;
+    IF antiguedad_empleado < p_antiguedad_deseada THEN
+        SET p_mensaje = 'Menor antiguedad';
     ELSE
-        SET p_Mensaje = 'Mayor antiguedad';
+        SET p_mensaje = 'Mayor antiguedad';
     END IF;
 END ;;
 DELIMITER ;
@@ -508,7 +506,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `VisualizarTransaccionYFactura` */;
+/*!50003 DROP PROCEDURE IF EXISTS `visualizar_transaccion_factura` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -518,31 +516,31 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `VisualizarTransaccionYFactura`(
-    IN p_Nro_Movimiento INT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `visualizar_transaccion_factura`(
+    IN p_nro_movimiento INT
 )
 BEGIN
-    SELECT transacciones.Nro_Movimiento,transacciones.Fecha,transacciones.Importe,medios_de_pago.Medio_Pago,bancos.Nombre_Banco,transacciones.Codigo
-    FROM Transacciones
-    JOIN Medios_de_Pago ON transacciones.Medio_Pago = medios_de_pago.Codigo_Pago
-    JOIN Bancos ON transacciones.Codigo_Banco = bancos.Cod_Banco
-    WHERE transacciones.Nro_Movimiento = p_Nro_Movimiento;
+    SELECT transacciones.nro_movimiento,transacciones.fecha,transacciones.importe,medios_de_pago.medio_pago,bancos.nombre_banco,transacciones.codigo
+    FROM transacciones
+    JOIN medios_de_pago ON transacciones.medio_pago = medios_de_pago.codigo_pago
+    JOIN bancos ON transacciones.codigo_banco = bancos.cod_banco
+    WHERE transacciones.nro_movimiento = p_nro_movimiento;
 
     SELECT 
-        facturas.Factura, 
-        facturas.Codigo, 
-        facturas.Importe_factura, 
-        facturas.Producto, 
-        facturas.Cantidad
-    FROM Facturas
-    WHERE facturas.Factura IN (
-        SELECT Factura 
-        FROM Enlace_Transacciones_Clientes_Facturas 
-        WHERE Nro_Movimiento = p_Nro_Movimiento
+        facturas.factura, 
+        facturas.codigo, 
+        facturas.importe_factura, 
+        facturas.producto, 
+        facturas.cantidad
+    FROM facturas
+    WHERE facturas.factura IN (
+        SELECT factura 
+        FROM enlace_transacciones_clientes_facturas 
+        WHERE nro_movimiento = p_nro_movimiento
         UNION
-        SELECT Factura 
-        FROM Enlace_Transacciones_Proveedores_Facturas 
-        WHERE Nro_Movimiento = p_Nro_Movimiento
+        SELECT factura 
+        FROM enlace_transacciones_proveedores_facturas 
+        WHERE nro_movimiento = p_nro_movimiento
     );
 END ;;
 DELIMITER ;
@@ -564,7 +562,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_bancos_mas_usados` AS select `bancos`.`Nombre_Banco` AS `Nombre_Banco`,sum(`transacciones`.`Importe`) AS `Bancos_mas_usados` from (`bancos` join `transacciones` on((`bancos`.`Cod_Banco` = `transacciones`.`Codigo_Banco`))) group by `bancos`.`Nombre_Banco` order by `Bancos_mas_usados` desc */;
+/*!50001 VIEW `view_bancos_mas_usados` AS select `bancos`.`nombre_banco` AS `nombre_banco`,sum(`transacciones`.`importe`) AS `bancos_mas_usados` from (`bancos` join `transacciones` on((`bancos`.`cod_banco` = `transacciones`.`codigo_banco`))) group by `bancos`.`nombre_banco` order by `bancos_mas_usados` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -582,7 +580,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_mejores_clientes` AS select `clientes`.`Raz_soc_Cliente` AS `Raz_soc_Cliente`,sum(`facturas`.`Importe_factura`) AS `total_vendido` from (`clientes` left join `facturas` on((`clientes`.`Nro_Cliente` = `facturas`.`Codigo`))) group by `clientes`.`Raz_soc_Cliente` order by `total_vendido` desc limit 5 */;
+/*!50001 VIEW `view_mejores_clientes` AS select `clientes`.`raz_soc_cliente` AS `raz_soc_cliente`,sum(`facturas`.`importe_factura`) AS `total_vendido` from (`clientes` left join `facturas` on((`clientes`.`nro_cliente` = `facturas`.`codigo`))) group by `clientes`.`raz_soc_cliente` order by `total_vendido` desc limit 5 */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -600,7 +598,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_proveedores_mayores_compras` AS select `proveedores`.`Raz_soc_Prov` AS `Raz_soc_Prov`,`facturas`.`Producto` AS `Producto`,sum(`facturas`.`Importe_factura`) AS `total_comprado` from (`proveedores` left join `facturas` on((`proveedores`.`Nro_Proveedor` = `facturas`.`Codigo`))) group by `proveedores`.`Raz_soc_Prov`,`facturas`.`Producto` order by `total_comprado` desc limit 5 */;
+/*!50001 VIEW `view_proveedores_mayores_compras` AS select `proveedores`.`raz_soc_prov` AS `raz_soc_prov`,`facturas`.`producto` AS `producto`,sum(`facturas`.`importe_factura`) AS `total_comprado` from (`proveedores` left join `facturas` on((`proveedores`.`nro_proveedor` = `facturas`.`codigo`))) group by `proveedores`.`raz_soc_prov`,`facturas`.`producto` order by `total_comprado` desc limit 5 */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -618,7 +616,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_top_medios_pago` AS select `medios_de_pago`.`MEdio_Pago` AS `Medio_pago`,count(`transacciones`.`Medio_Pago`) AS `top_medios_pago` from (`medios_de_pago` join `transacciones` on((`medios_de_pago`.`Codigo_Pago` = `transacciones`.`Medio_Pago`))) group by `medios_de_pago`.`MEdio_Pago` */;
+/*!50001 VIEW `view_top_medios_pago` AS select `medios_de_pago`.`medio_pago` AS `medio_pago`,count(`transacciones`.`medio_pago`) AS `top_medios_pago` from (`medios_de_pago` join `transacciones` on((`medios_de_pago`.`codigo_pago` = `transacciones`.`medio_pago`))) group by `medios_de_pago`.`medio_pago` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -632,4 +630,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-25 14:55:51
+-- Dump completed on 2024-09-10 21:53:31
