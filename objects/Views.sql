@@ -1,28 +1,28 @@
-CREATE VIEW View_Mejores_Clientes AS
-SELECT clientes.Raz_soc_Cliente, SUM(facturas.Importe_factura) AS total_vendido
+CREATE VIEW view_mejores_clientes AS
+SELECT clientes.raz_soc_cliente, SUM(facturas.importe_factura) AS total_vendido
 FROM clientes
-LEFT JOIN facturas ON clientes.Nro_Cliente = facturas.codigo
-GROUP BY clientes.Raz_soc_Cliente
+LEFT JOIN facturas ON clientes.nro_cliente = facturas.codigo
+GROUP BY clientes.raz_soc_cliente
 ORDER BY total_vendido DESC
 LIMIT 5;
 
-CREATE VIEW View_Proveedores_Mayores_compras AS
-SELECT proveedores.Raz_soc_Prov, Producto, SUM(facturas.Importe_factura) AS total_comprado
+CREATE VIEW view_proveedores_mayores_compras AS
+SELECT proveedores.raz_soc_prov, producto, SUM(facturas.importe_factura) AS total_comprado
 FROM proveedores
-LEFT JOIN facturas ON proveedores.Nro_proveedor = facturas.codigo
-GROUP BY proveedores.Raz_soc_Prov,producto
+LEFT JOIN facturas ON proveedores.nro_proveedor = facturas.codigo
+GROUP BY proveedores.raz_soc_prov,producto
 ORDER BY total_comprado DESC
 LIMIT 5;
 
-CREATE VIEW View_Bancos_mas_usados AS
-SELECT bancos.Nombre_Banco, sum(transacciones.importe) AS Bancos_mas_usados
-FROM Bancos
-JOIN transacciones ON bancos.cod_Banco = transacciones.Codigo_banco
-GROUP BY bancos.Nombre_Banco
+CREATE VIEW view_bancos_mas_usados AS
+SELECT bancos.nombre_banco, sum(transacciones.importe) AS bancos_mas_usados
+FROM bancos
+JOIN transacciones ON bancos.cod_banco = transacciones.codigo_banco
+GROUP BY bancos.nombre_banco
 ORDER BY bancos_mas_usados DESC;
 
-CREATE VIEW View_top_medios_pago AS
-SELECT medios_de_pago.Medio_pago, COUNT(transacciones.medio_Pago) AS top_medios_pago
+CREATE VIEW view_top_medios_pago AS
+SELECT medios_de_pago.medio_pago, COUNT(transacciones.medio_Pago) AS top_medios_pago
 FROM medios_de_pago
-JOIN transacciones ON medios_de_pago.Codigo_pago = transacciones.Medio_pago
-GROUP BY Medio_pago ;
+JOIN transacciones ON medios_de_pago.codigo_pago = transacciones.medio_pago
+GROUP BY medio_pago ;
